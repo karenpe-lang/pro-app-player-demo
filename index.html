@@ -84,6 +84,8 @@
     background:linear-gradient(160deg,var(--logo-hi) 0%, #0B3628 46%, var(--logo-lo) 100%);
     box-shadow:0 18px 44px -22px rgba(0,0,0,.78), inset 0 1px 0 rgba(255,255,255,.08);
     overflow:hidden;
+    /* 文字和麦克风作为一个整体在卡片里居中 */
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;
   }
   .logo::before{
     content:"";position:absolute;inset:0;
@@ -91,13 +93,12 @@
     pointer-events:none;
   }
   .logo .show{
-    position:absolute;left:28px;top:26px;
+    position:relative;
     font-size:16px;font-weight:700;line-height:1;letter-spacing:-.012em;
     color:var(--accent-soft);
   }
   .micmark{
-    position:absolute;left:50%;top:50%;width:68px;height:136px;
-    transform:translate(-50%,-50%);display:block;
+    position:relative;width:68px;height:136px;flex:none;display:block;
     filter:drop-shadow(0 0 22px rgba(168,255,222,.22));
   }
 
@@ -292,9 +293,9 @@
   /* ════════ 图标 ════════ */
   var ICON = {
     chevron:'<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.4 8 12 15.4 19.6 8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-    dl:'<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.6 4.2v12.3a2.6 2.6 0 0 0 2.6 2.6h7.6a2.6 2.6 0 0 0 2.6-2.6V4.2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M12 2.2v11.4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M7.7 9.5 12 13.8l4.3-4.3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    dl:'<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.9 7.8H4.45v12.7h15.1V7.8H14.1" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 4.2v9.3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M9.45 10.6 12 14.1l2.55-3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     heart:'<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path class="heartPath" d="M12 20.4C10.5 19.2 3.6 14.6 3.6 9.7a4.7 4.7 0 0 1 8.4-2.9 4.7 4.7 0 0 1 8.4 2.9c0 4.9-6.9 9.5-8.4 10.7Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>',
-    share:'<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.4 10.2v8.9a2.6 2.6 0 0 1-2.6 2.6H6.2a2.6 2.6 0 0 1-2.6-2.6v-8.9a2.6 2.6 0 0 1 2.6-2.6h3.6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M13.4 3.2h7.4v7.4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M20.8 3.2 10.6 13.4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
+    share:'<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.4 7.3H6.8A3.2 3.2 0 0 0 3.6 10.5v6.6a3.2 3.2 0 0 0 3.2 3.2h10.4a3.2 3.2 0 0 0 3.2-3.2v-3.6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M9.4 17.1A10 10 0 0 1 18.4 5.9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M15.48 4.37 18.4 5.9 15.81 7.95" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     more:'<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5.4" r="1.65" fill="currentColor"/><circle cx="12" cy="12" r="1.65" fill="currentColor"/><circle cx="12" cy="18.6" r="1.65" fill="currentColor"/></svg>',
     expand:'<svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.6 4.4h5v5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><path d="M19.6 4.4 13 11" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><path d="M9.4 19.6h-5v-5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.4 19.6 11 13" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>'
   };
@@ -313,16 +314,18 @@
     return '<div class="controls" data-i="' + i + '">'
       + '<button class="ctl-speed" data-act="speed" aria-label="播放速度">1.0x</button>'
       + '<button class="ctl-back" data-act="back" aria-label="后退 30 秒">'
-      + '<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M28.4 8A14.6 14.6 0 1 1 11.6 8" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>'
-      + '<path d="M0 0-8 4.5-8-4.5Z" fill="#fff" transform="translate(11.6,8) rotate(-135)"/>'
-      + '<text x="20" y="25" text-anchor="middle" font-size="15.5" font-weight="500" fill="#fff">30</text></svg></button>'
+      + '<svg viewBox="0 0 36 36" aria-hidden="true">'
+      + '<path d="M7.04 29.16A15.5 15.5 0 1 0 7.04 7.24" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round"/>'
+      + '<path d="M10.27 6.55 7.04 7.24 7.73 4.01Z" fill="#fff"/>'
+      + '<text x="18" y="23.4" text-anchor="middle" font-size="15" font-weight="400" fill="#fff">30</text></svg></button>'
       + '<button class="ctl-play" data-act="play" aria-label="播放" aria-pressed="false">'
       + '<svg viewBox="0 0 73 73" aria-hidden="true"><circle cx="36.5" cy="36.5" r="35.5" fill="none" stroke="#fff" stroke-width="2"/>'
       + '<path class="playGlyph" d="M28.4 22.6a1.9 1.9 0 0 1 2.88-1.63l18.2 12.3a1.9 1.9 0 0 1 0 3.26l-18.2 12.3a1.9 1.9 0 0 1-2.88-1.63Z" fill="#fff" transform="translate(1,1)"/></svg></button>'
       + '<button class="ctl-fwd" data-act="fwd" aria-label="前进 30 秒">'
-      + '<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M11.6 8a14.6 14.6 0 1 0 16.8 0" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>'
-      + '<path d="M0 0-8 4.5-8-4.5Z" fill="#fff" transform="translate(28.4,8) rotate(-45)"/>'
-      + '<text x="20" y="25" text-anchor="middle" font-size="15.5" font-weight="500" fill="#fff">30</text></svg></button>'
+      + '<svg viewBox="0 0 36 36" aria-hidden="true">'
+      + '<path d="M25.75 31.62A15.5 15.5 0 1 1 25.75 4.78" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round"/>'
+      + '<path d="M24.25 1.84 25.75 4.78 22.46 4.95Z" fill="#fff"/>'
+      + '<text x="18" y="23.4" text-anchor="middle" font-size="15" font-weight="400" fill="#fff">30</text></svg></button>'
       + '<button class="ctl-timer" aria-label="睡眠定时">'
       + '<svg viewBox="0 0 26 26" aria-hidden="true">'
       + '<circle cx="13" cy="13.6" r="8.3" fill="none" stroke="#fff" stroke-width="1.5"/>'
