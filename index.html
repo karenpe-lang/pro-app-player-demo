@@ -103,11 +103,10 @@
   }
 
   /* ══ 视频条目的封面 ══════════════════════════════ */
-  /* 同样没有绿边：视频以 16:9 直接落在页面背景上 */
+  /* 左右撑满整屏宽、不留间距，高度按 16:9 推出；上下居中在 y=295，与音频条目对齐 */
   .videobox{
-    position:absolute;left:40px;top:197px;width:348px;height:196px;border-radius:14px;
+    position:absolute;left:0;top:174.625px;width:428px;height:240.75px;
     overflow:hidden;background:#0B1512;
-    box-shadow:0 18px 44px -22px rgba(0,0,0,.8);
   }
 
   /* 视频条目：画面 + 右下角扩大按钮 */
