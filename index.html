@@ -102,6 +102,30 @@
     filter:drop-shadow(0 0 22px rgba(168,255,222,.22));
   }
 
+  /* ══ 视频条目 · 仅音频模式 ════════════════════════ */
+  /* 切成音频后视频换成 logo 卡：高度与视频一致（240），纵向位置不变，切换时不跳 */
+  .logo--compact{
+    left:94px;top:175px;width:240px;height:240px;border-radius:12px;
+    gap:14px;display:none;
+  }
+  .logo--compact .show{font-size:15px}
+  .logo--compact .micmark{width:60px;height:120px}
+  .page.audioonly .logo--compact{display:flex}
+  .page.audioonly .videobox{display:none}
+
+  /* 切到音频 / 切回视频 的切换按钮，位于媒体块正下方居中 */
+  .switchmode{
+    position:absolute;left:50%;top:430px;transform:translateX(-50%);
+    height:32px;padding:0 15px 0 12px;border-radius:16px;
+    border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.09);
+    color:#EAF4F0;font-size:13px;font-weight:500;letter-spacing:-.01em;white-space:nowrap;
+    display:inline-flex;align-items:center;gap:7px;cursor:pointer;
+    transition:background .16s ease;
+  }
+  .switchmode:hover{background:rgba(255,255,255,.15)}
+  .switchmode:active{transform:translateX(-50%) scale(.96)}
+  .switchmode svg{display:block;flex:none}
+
   /* ══ 视频条目的封面 ══════════════════════════════ */
   /* 左右撑满整屏宽、不留间距，高度按 16:9 推出；上下居中在 y=295，与音频条目对齐 */
   .videobox{
@@ -296,7 +320,9 @@
     heart:'<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path class="heartPath" d="M12 20.4C10.5 19.2 3.6 14.6 3.6 9.7a4.7 4.7 0 0 1 8.4-2.9 4.7 4.7 0 0 1 8.4 2.9c0 4.9-6.9 9.5-8.4 10.7Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>',
     share:'<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.4 7.3H6.8A3.2 3.2 0 0 0 3.6 10.5v6.6a3.2 3.2 0 0 0 3.2 3.2h10.4a3.2 3.2 0 0 0 3.2-3.2v-3.6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M9.4 17.1A10 10 0 0 1 18.4 5.9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M15.48 4.37 18.4 5.9 15.81 7.95" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     more:'<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5.4" r="1.65" fill="currentColor"/><circle cx="12" cy="12" r="1.65" fill="currentColor"/><circle cx="12" cy="18.6" r="1.65" fill="currentColor"/></svg>',
-    expand:'<svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.6 4.4h5v5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><path d="M19.6 4.4 13 11" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><path d="M9.4 19.6h-5v-5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.4 19.6 11 13" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>'
+    expand:'<svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.6 4.4h5v5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><path d="M19.6 4.4 13 11" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><path d="M9.4 19.6h-5v-5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.4 19.6 11 13" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>',
+    toAudio:'<svg width="17" height="17" viewBox="0 0 20 20" aria-hidden="true"><path d="M3.4 14V10.2a6.6 6.6 0 0 1 13.2 0V14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><rect x="1.7" y="12.6" width="3.4" height="5.6" rx="1.7" fill="currentColor"/><rect x="14.9" y="12.6" width="3.4" height="5.6" rx="1.7" fill="currentColor"/></svg>',
+    toVideo:'<svg width="17" height="17" viewBox="0 0 20 20" aria-hidden="true"><rect x="2" y="5" width="16" height="11.4" rx="2.8" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8.5 8.3a.6.6 0 0 1 .92-.5l4.3 2.7a.6.6 0 0 1 0 1.02l-4.3 2.7a.6.6 0 0 1-.92-.51Z" fill="currentColor"/></svg>'
   };
 
   /* 麦克风图形：渐变与遮罩定义在文档顶部的共享 <defs> 里，这里只引用 */
@@ -345,6 +371,11 @@
         + '<img class="vframe vsrc" alt="视频画面">'
         + '<button class="expand" data-act="expand" aria-label="全屏播放">' + ICON.expand + '</button>'
         + '</div>'
+        + '<div class="logo logo--compact">'
+        + '<div class="show">Demo Episode Logo</div>' + MIC_SVG
+        + '</div>'
+        + '<button class="switchmode" data-act="switchmode" aria-pressed="false">'
+        + ICON.toAudio + '<span>Switch to audio</span></button>'
       : '<div class="logo">'
         + '<div class="show">Demo Episode Logo</div>' + MIC_SVG
         + '</div>';
@@ -453,6 +484,13 @@
       btn.querySelector('.heartPath').setAttribute('fill', ST[i].liked ? 'currentColor' : 'none');
     }
     else if (act === 'expand') { openFs(); }
+    else if (act === 'switchmode') {
+      var audioOnly = page.classList.toggle('audioonly');
+      btn.setAttribute('aria-pressed', String(audioOnly));
+      btn.innerHTML = audioOnly
+        ? ICON.toVideo + '<span>Switch to video</span>'
+        : ICON.toAudio + '<span>Switch to audio</span>';
+    }
   });
 
   /* 进度条拖动 */
